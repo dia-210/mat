@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Cube</title>
+  <style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f5f5f5;
+    }
+
+    .container {
+        perspective: 1000px;
+    }
+
+    .cube {
+        width: 200px;
+        height: 200px;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.1s ease-out;
+    }
+
+    .face {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        background-color: #228B22; /* Green color for thousand cube */
+        border: 2px solid #006400; /* Dark green border for detail */
+        box-sizing: border-box;
+    }
+
+    .face.front  { transform: rotateY(  0deg) translateZ(100px); }
+    .face.back   { transform: rotateY(180deg) translateZ(100px); }
+    .face.left   { transform: rotateY(-90deg) translateZ(100px); }
+    .face.right  { transform: rotateY( 90deg) translateZ(100px); }
+    .face.top    { transform: rotateX( 90deg) translateZ(100px); }
+    .face.bottom { transform: rotateX(-90deg) translateZ(100px); }
+
+    /* Adding 10 horizontal black lines */
+    .face::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        background-color: black;
+        opacity: 0.8;
+        left: 0;
+    }
+
+    /* Apply 10 evenly spaced lines around the cube */
+    .face.front::before {
+        top: 0;
+        box-shadow: 0 20px 0 #000, 0 40px 0 #000, 0 60px 0 #000, 
+                    0 80px 0 #000, 0 100px 0 #000, 0 120px 0 #000, 
+                    0 140px 0 #000, 0 160px 0 #000, 0 180px 0 #000, 
+                    0 200px 0 #000;
+    }
+
+    .face.back::before {
+        top: 0;
+        box-shadow: 0 20px 0 #000, 0 40px 0 #000, 0 60px 0 #000, 
+                    0 80px 0 #000, 0 100px 0 #000, 0 120px 0 #000, 
+                    0 140px 0 #000, 0 160px 0 #000, 0 180px 0 #000, 
+                    0 200px 0 #000;
+    }
+
+    .face.left::before {
+        top: 0;
+        box-shadow: 0 20px 0 #000, 0 40px 0 #000, 0 60px 0 #000, 
+                    0 80px 0 #000, 0 100px 0 #000, 0 120px 0 #000, 
+                    0 140px 0 #000, 0 160px 0 #000, 0 180px 0 #000, 
+                    0 200px 0 #000;
+    }
+
+    .face.right::before {
+        top: 0;
+        box-shadow: 0 20px 0 #000, 0 40px 0 #000, 0 60px 0 #000, 
+                    0 80px 0 #000, 0 100px 0 #000, 0 120px 0 #000, 
+                    0 140px 0 #000, 0 160px 0 #000, 0 180px 0 #000, 
+                    0 200px 0 #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="cube" id="cube">
+      <div class="face front"></div>
+      <div class="face back"></div>
+      <div class="face left"></div>
+      <div class="face right"></div>
+      <div class="face top"></div>
+      <div class="face bottom"></div>
+    </div>
+  </div>
+
+  <script>
+    let isDragging = false;
+    let lastX = 0;
+    let lastY = 0;
+    let rotationX = 30; // Initial rotation on X axis
+    let rotationY = 45; // Initial rotation on Y axis
+
+    const cube = document.getElementById('cube');
+
+    cube.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        lastX = e.clientX;
+        lastY = e.clientY;
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+
+        const deltaX = e.clientX - lastX;
+        const deltaY = e.clientY - lastY;
+
+        rotationX += deltaY * 0.2; // Adjust rotation speed
+        rotationY += deltaX * 0.2; // Adjust rotation speed
+
+        cube.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+
+        lastX = e.clientX;
+        lastY = e.clientY;
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+  </script>
+</body>
+</html>
